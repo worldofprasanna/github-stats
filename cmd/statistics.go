@@ -7,11 +7,10 @@ import (
 
 type Statistics struct {
 	weeks int
-	order string
 	commitActivities []map[string]int
 }
 
-func NewStatistics(repoPath string, weeks int, order string) *Statistics {
+func NewStatistics(repoPath string, weeks int) *Statistics {
 	githubAPI := NewGithubAPI(repoPath)
 	rawCommitActivities := githubAPI.FetchCommits()
 	commitActivities := make([]map[string]int, len(rawCommitActivities))
@@ -20,7 +19,6 @@ func NewStatistics(repoPath string, weeks int, order string) *Statistics {
 	}
 	return &Statistics{
 		weeks: weeks,
-		order: order,
 		commitActivities: commitActivities,
 	}
 }

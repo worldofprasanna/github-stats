@@ -19,16 +19,12 @@ var rootCmd = &cobra.Command{
     if err != nil {
       return err
     }
-    sort, err := cmd.Flags().GetString("sort")
-    if err != nil {
-      return err
-    }
     repoName := strings.Join(args, "")
     if !strings.Contains(repoName, "/") {
       return errors.New("Not a valid repo path. Specify in format <owner/repo>")
     }
-    fmt.Printf("Going to collect metrics for [repo - %s, weeks - %d, sorted by - %s]\n", repoName, weeks, sort)
-    statistics := NewStatistics(repoName, weeks, sort)
+    fmt.Printf("Going to collect metrics for [repo - %s, weeks - %d]\n", repoName, weeks)
+    statistics := NewStatistics(repoName, weeks)
     result := statistics.ActiveDayInRepo()
     fmt.Printf("Result: %s\n", result)
     return nil
@@ -36,11 +32,9 @@ var rootCmd = &cobra.Command{
 }
 
 var weeks int
-var sort string
 
 func init() {
   rootCmd.Flags().IntVarP(&weeks, "weeks", "w", 52, "No of weeks to process")
-  rootCmd.Flags().StringVarP(&sort, "sort", "s", "asc", "Sort the statistics [asc|desc]")
 }
 
 func Execute() {
