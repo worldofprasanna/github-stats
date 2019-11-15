@@ -17,7 +17,7 @@
 ## Install
 
 ```
-/bin/setup
+/bin/install
 ```
 
 ## Usage
