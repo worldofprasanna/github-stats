@@ -23,6 +23,9 @@ Eg: github-stats list --help`,
     if err != nil {
       return err
     }
+    if weeks < 1 || weeks > 52 {
+      return errors.New("Not a valid week. Week should be in the range of 1 - 52")
+    }
     repoName := strings.Join(args, "")
     if !strings.Contains(repoName, "/") {
       return errors.New("Not a valid repo path. Specify in format <owner/repo>")
