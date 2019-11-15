@@ -10,6 +10,7 @@
   - [Table of Contents](#table-of-contents)
   - [Install](#install)
   - [Usage](#usage)
+  - [Assumptions](#assumptions)
   - [Maintainers](#maintainers)
   - [Contributing](#contributing)
   - [License](#license)
@@ -25,6 +26,12 @@
 ```
 /bin/run
 ```
+
+## Assumptions
+
+- Number of weeks would be less than or equal to 52
+- Listing the average commits per day can be a separate sub command
+- When listing the average commits per day, it will always fetch for last 52 weeks
 
 ## Maintainers
 
