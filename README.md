@@ -6,20 +6,24 @@
 
 ## Table of Contents
 
-- [Install](#install)
-- [Usage](#usage)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-- [License](#license)
+- [github-stats](#github-stats)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [Maintainers](#maintainers)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Install
 
 ```
+/bin/setup
 ```
 
 ## Usage
 
 ```
+/bin/run
 ```
 
 ## Maintainers
