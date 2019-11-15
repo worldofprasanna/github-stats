@@ -2,15 +2,22 @@ package cmd
 
 import (
 	"fmt"
+	"sort"
 	"github.com/google/go-github/github"
 )
 
 type Statistics struct {
 	weeks int
+	sort string
 	commitActivities []map[string]int
 }
 
-func NewStatistics(repoPath string, weeks int) *Statistics {
+type SortedCommit struct {
+	Key   string
+	Value int
+}
+
+func NewStatistics(repoPath string, weeks int, sort string) *Statistics {
 	githubAPI := NewGithubAPI(repoPath)
 	rawCommitActivities := githubAPI.FetchCommits()
 	lastCommitActivities := FilterLastNRecords(rawCommitActivities, weeks)
@@ -21,6 +28,7 @@ func NewStatistics(repoPath string, weeks int) *Statistics {
 	return &Statistics{
 		weeks: weeks,
 		commitActivities: commitActivities,
+		sort: sort,
 	}
 }
 
@@ -37,12 +45,12 @@ func FilterLastNRecords(commits []*github.WeeklyCommitActivity, weeks int) []*gi
 }
 
 func (s *Statistics) ActiveDayInRepo() string {
-	aggregatedCommitActivities := AggregateCommitActivities(s.commitActivities)
+	aggregatedCommitActivities := AggregateCommitActivities(s.commitActivities, s.weeks)
 	maxCommitDay, maxCommit := FindMostCommitsDay(aggregatedCommitActivities)
-	return fmt.Sprintf("%s %d", maxCommitDay, maxCommit / s.weeks)
+	return fmt.Sprintf("%s %d", maxCommitDay, maxCommit)
 }
 
-func AggregateCommitActivities(commits []map[string]int) map[string]int {
+func AggregateCommitActivities(commits []map[string]int, totalWeeks int) map[string]int {
 	aggregatedCommits := make(map[string]int)
 	for _, commit := range commits {
 		aggregatedCommits["sunday"] += commit["sunday"]
@@ -52,7 +60,10 @@ func AggregateCommitActivities(commits []map[string]int) map[string]int {
 		aggregatedCommits["thursday"] += commit["thursday"]
 		aggregatedCommits["friday"] += commit["friday"]
 		aggregatedCommits["saturday"] += commit["saturday"]
+	}
 
+	for day, count := range aggregatedCommits {
+		aggregatedCommits[day] = count / totalWeeks
 	}
 	return aggregatedCommits
 }
@@ -82,4 +93,29 @@ func ParseCommitActivity(ca *github.WeeklyCommitActivity) map[string]int {
 	commitActivity["saturday"] = commitsPerDay[6]
 	
 	return commitActivity
+}
+
+func (s *Statistics) AverageCommitPerDay() {
+	commits := AggregateCommitActivities(s.commitActivities, s.weeks)
+	sortedCommits := SortCommitsPerDay(commits, s.sort)
+	for _, commit := range sortedCommits {
+		fmt.Printf("%s has avg of %d commits\n", commit.Key, commit.Value)
+	}
+}
+
+func SortCommitsPerDay(commits map[string]int, sortBy string) []SortedCommit {
+	var sortedCommits []SortedCommit
+  for k, v := range commits {
+    sortedCommits = append(sortedCommits, SortedCommit{k, v})
+	}
+	if sortBy == "asc" {
+		sort.Slice(sortedCommits, func(i, j int) bool {
+			return sortedCommits[i].Value < sortedCommits[j].Value
+		})
+	} else {
+		sort.Slice(sortedCommits, func(i, j int) bool {
+			return sortedCommits[i].Value > sortedCommits[j].Value
+		})
+	}
+	return sortedCommits
 }

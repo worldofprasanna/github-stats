@@ -36,14 +36,14 @@ func TestStatistics(t *testing.T) {
 			Days: []int{ 10, 11, 12, 13, 14, 15, 16 },
 		})
 		expectedData := make(map[string]int)
-		expectedData["sunday"] = 30
-		expectedData["monday"] = 33
-		expectedData["tuesday"] = 36
-		expectedData["wednesday"] = 39
-		expectedData["thursday"] = 42
-		expectedData["friday"] = 45
-		expectedData["saturday"] = 48
-		actualData := cmd.AggregateCommitActivities([]map[string]int{commit1, commit2, commit3})
+		expectedData["sunday"] = 10
+		expectedData["monday"] = 11
+		expectedData["tuesday"] = 12
+		expectedData["wednesday"] = 13
+		expectedData["thursday"] = 14
+		expectedData["friday"] = 15
+		expectedData["saturday"] = 16
+		actualData := cmd.AggregateCommitActivities([]map[string]int{commit1, commit2, commit3}, 3)
 		assert.Equal(t, actualData, expectedData, "should have aggregated the data properly")
 	})
 
@@ -102,8 +102,18 @@ func TestStatistics(t *testing.T) {
 
 	// This is a flaky test, as it depends on the actual Github API and the result may change in future.
 	t.Run("should find the max number of commit and day for the repository", func(t *testing.T) {
-		statistics := cmd.NewStatistics("kubernetes/kubernetes", 52)
+		statistics := cmd.NewStatistics("kubernetes/kubernetes", 52, "asc")
 		result := statistics.ActiveDayInRepo()
 		assert.Equal(t, result, "wednesday 28", "should have found the max commit and day for it")
+	})
+
+	t.Run("should sort the commits based on commit count", func(t *testing.T) {
+		commit := cmd.ParseCommitActivity(&github.WeeklyCommitActivity{
+			Days: []int{ 10, 11, 12, 13, 14, 15, 16 },
+		})
+		actualCommits := cmd.SortCommitsPerDay(commit, "desc")
+		for i, val := range actualCommits {
+			assert.Equal(t, (16-i), val.Value, "should have properly sorted the values")
+		}
 	})
 }
