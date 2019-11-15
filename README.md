@@ -21,6 +21,9 @@
 # To run the unit test
 /bin/test
 
+# To run the linter
+/bin/lint
+
 ```
 ```
 # To know about the command, use --help option
