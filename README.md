@@ -19,17 +19,17 @@
 
 ```
 # To run the unit test
-/bin/test
+./bin/test
 
 # To run the linter
-/bin/lint
+./bin/lint
 
 ```
 ```
 # To know about the command, use --help option
-/bin/run --help
-/bin/run activeDay --weeks=20 kubernetes/kubernetes
-/bin/run listAverageCommits --sort=desc kubernetes/kubernetes
+./bin/run --help
+./bin/run activeDay --weeks=20 kubernetes/kubernetes
+./bin/run listAverageCommits --sort=desc kubernetes/kubernetes
 
 ```
 ```
