@@ -3,6 +3,7 @@ package cmd
 import (
   "fmt"
   "os"
+  "strings"
   "github.com/spf13/cobra"
 )
 
@@ -20,7 +21,11 @@ var rootCmd = &cobra.Command{
     if err != nil {
       return err
     }
-    fmt.Printf("Fetching Github Stats for %d and sorting by %s\n", weeks, sort)
+    repoName := strings.Join(args, "")
+    fmt.Printf("Going to collect metrics for [repo - %s, weeks - %d, sorted by - %s]\n", repoName, weeks, sort)
+    statistics := NewStatistics(repoName, weeks, sort)
+    result := statistics.ActiveDayInRepo()
+    fmt.Printf("Result: %s\n", result)
     return nil
   },
 }
