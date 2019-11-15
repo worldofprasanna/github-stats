@@ -4,6 +4,7 @@ import (
   "fmt"
   "os"
   "strings"
+  "errors"
   "github.com/spf13/cobra"
 )
 
@@ -11,6 +12,7 @@ var rootCmd = &cobra.Command{
   Use:   "github-stats",
   Short: "Get commit info for the Github Repository",
   Long: `Given a repository name, fetch the stats based on the commit history.
+  Eg: github-stats kubernetes/kubernetes --weeks=20
   Please check help for more detailed instructions.`,
   RunE: func(cmd *cobra.Command, args []string) error {
     weeks, err := cmd.Flags().GetInt("weeks")
@@ -22,6 +24,9 @@ var rootCmd = &cobra.Command{
       return err
     }
     repoName := strings.Join(args, "")
+    if !strings.Contains(repoName, "/") {
+      return errors.New("Not a valid repo path. Specify in format <owner/repo>")
+    }
     fmt.Printf("Going to collect metrics for [repo - %s, weeks - %d, sorted by - %s]\n", repoName, weeks, sort)
     statistics := NewStatistics(repoName, weeks, sort)
     result := statistics.ActiveDayInRepo()
