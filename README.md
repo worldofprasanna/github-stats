@@ -24,7 +24,13 @@
 ## Usage
 
 ```
-/bin/run
+# To run the unit test
+/bin/test
+
+# To run the application (do the /bin/install first),
+github-stats --help
+
+# Help will guide you further
 ```
 
 ## Assumptions

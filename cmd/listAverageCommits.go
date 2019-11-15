@@ -4,16 +4,15 @@ import (
 	"fmt"
 	"strings"
 	"errors"
-
 	"github.com/spf13/cobra"
 )
 
-var listCmd = &cobra.Command{
-	Use:   "list",
+var listAverageCommitsCmd = &cobra.Command{
+	Use:   "listAverageCommits",
 	Short: "list the commit activity for the repository",
 	Long: `This would list the average commits per day
 
-Eg: github-stats list --sort=desc kubernetes/kubernetes
+Eg: github-stats listAverageCommits --sort=desc kubernetes/kubernetes
 
   Please check help for more detailed instructions.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -37,6 +36,6 @@ Eg: github-stats list --sort=desc kubernetes/kubernetes
 }
 
 func init() {
-	listCmd.Flags().StringP("sort", "s", "asc", "sort the list in asc / desc order")
-	rootCmd.AddCommand(listCmd)
+	listAverageCommitsCmd.Flags().StringP("sort", "s", "asc", "sort the list in asc / desc order")
+	rootCmd.AddCommand(listAverageCommitsCmd)
 }
