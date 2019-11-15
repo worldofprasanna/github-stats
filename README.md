@@ -8,18 +8,12 @@
 
 - [github-stats](#github-stats)
   - [Table of Contents](#table-of-contents)
-  - [Install](#install)
   - [Usage](#usage)
+  - [Install the binary in GOPATH/bin](#install-the-binary-in-gopathbin)
   - [Assumptions](#assumptions)
   - [Maintainers](#maintainers)
   - [Contributing](#contributing)
   - [License](#license)
-
-## Install
-
-```
-/bin/install
-```
 
 ## Usage
 
@@ -27,10 +21,31 @@
 # To run the unit test
 /bin/test
 
-# To run the application (do the /bin/install first),
-github-stats --help
+```
+```
+# To know about the command, use --help option
+/bin/run --help
+/bin/run activeDay --weeks=20 kubernetes/kubernetes
+/bin/run listAverageCommits --sort=desc kubernetes/kubernetes
 
-# Help will guide you further
+```
+```
+# Docker Setup
+docker build -t github-stats .
+
+# To test the functionality
+
+1. Fetch the active day of week along with average commit
+docker run github-stats activeDay --weeks=20 kubernetes/kubernetes
+
+2. List the average commit for week
+docker run github-stats listAverageCommits kubernetes/kubernetes
+
+```
+## Install the binary in GOPATH/bin
+
+```
+/bin/install
 ```
 
 ## Assumptions
