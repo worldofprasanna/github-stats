@@ -1,3 +1,4 @@
 #!/bin/bash
 
-go test
+go test cmd/github_api_test.go
+go test cmd/statistics_test.go

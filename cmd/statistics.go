@@ -13,14 +13,27 @@ type Statistics struct {
 func NewStatistics(repoPath string, weeks int) *Statistics {
 	githubAPI := NewGithubAPI(repoPath)
 	rawCommitActivities := githubAPI.FetchCommits()
-	commitActivities := make([]map[string]int, len(rawCommitActivities))
-	for i, val := range rawCommitActivities {
+	lastCommitActivities := FilterLastNRecords(rawCommitActivities, weeks)
+	commitActivities := make([]map[string]int, len(lastCommitActivities))
+	for i, val := range lastCommitActivities {
 			commitActivities[i] = ParseCommitActivity(val)
 	}
 	return &Statistics{
 		weeks: weeks,
 		commitActivities: commitActivities,
 	}
+}
+
+func FilterLastNRecords(commits []*github.WeeklyCommitActivity, weeks int) []*github.WeeklyCommitActivity {
+	var lastCommitActivities []*github.WeeklyCommitActivity
+	maxValue := len(commits)
+	if weeks < maxValue {
+		fromWeeks := maxValue - weeks
+		lastCommitActivities = commits[fromWeeks:maxValue]
+	} else {
+		lastCommitActivities = commits
+	}
+	return lastCommitActivities
 }
 
 func (s *Statistics) ActiveDayInRepo() string {
