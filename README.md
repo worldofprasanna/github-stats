@@ -1,6 +1,7 @@
 # github-stats
 
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![CircleCI](https://circleci.com/gh/worldofprasanna/github-stats.svg?style=svg)](https://circleci.com/gh/worldofprasanna/github-stats)
 
 > Extract info about commits from github
 
