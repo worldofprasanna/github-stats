@@ -104,7 +104,7 @@ func TestStatistics(t *testing.T) {
 	t.Run("should find the max number of commit and day for the repository", func(t *testing.T) {
 		statistics := cmd.NewStatistics("kubernetes/kubernetes", 52, "asc")
 		result := statistics.ActiveDayInRepo()
-		assert.Equal(t, result, "wednesday 28", "should have found the max commit and day for it")
+		assert.Equal(t, result, "wednesday 27", "should have found the max commit and day for it")
 	})
 
 	t.Run("should sort the commits based on commit count", func(t *testing.T) {

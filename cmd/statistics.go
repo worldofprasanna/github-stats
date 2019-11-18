@@ -17,6 +17,8 @@ type SortedCommit struct {
 	Value int
 }
 
+var daysOfWeek = []string {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"}
+
 func NewStatistics(repoPath string, weeks int, sort string) *Statistics {
 	githubAPI := NewGithubAPI(repoPath)
 	rawCommitActivities := githubAPI.FetchCommits()
@@ -53,13 +55,9 @@ func (s *Statistics) ActiveDayInRepo() string {
 func AggregateCommitActivities(commits []map[string]int, totalWeeks int) map[string]int {
 	aggregatedCommits := make(map[string]int)
 	for _, commit := range commits {
-		aggregatedCommits["sunday"] += commit["sunday"]
-		aggregatedCommits["monday"] += commit["monday"]
-		aggregatedCommits["tuesday"] += commit["tuesday"]
-		aggregatedCommits["wednesday"] += commit["wednesday"]
-		aggregatedCommits["thursday"] += commit["thursday"]
-		aggregatedCommits["friday"] += commit["friday"]
-		aggregatedCommits["saturday"] += commit["saturday"]
+		for _, day := range daysOfWeek {
+			aggregatedCommits[day] += commit[day]
+		}
 	}
 
 	for day, count := range aggregatedCommits {
@@ -84,13 +82,9 @@ func FindMostCommitsDay(commits map[string]int) (string, int) {
 func ParseCommitActivity(ca *github.WeeklyCommitActivity) map[string]int {
 	commitActivity := make(map[string]int)
 	commitsPerDay := ca.Days
-	commitActivity["sunday"] = commitsPerDay[0]
-	commitActivity["monday"] = commitsPerDay[1]
-	commitActivity["tuesday"] = commitsPerDay[2]
-	commitActivity["wednesday"] = commitsPerDay[3]
-	commitActivity["thursday"] = commitsPerDay[4]
-	commitActivity["friday"] = commitsPerDay[5]
-	commitActivity["saturday"] = commitsPerDay[6]
+	for i, day := range daysOfWeek {
+		commitActivity[day] = commitsPerDay[i]
+	}
 	
 	return commitActivity
 }
