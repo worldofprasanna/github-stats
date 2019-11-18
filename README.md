@@ -10,15 +10,50 @@
 
 - [github-stats](#github-stats)
   - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
   - [Usage](#usage)
-  - [Install the binary in GOPATH/bin](#install-the-binary-in-gopathbin)
+  - [Tech specifics](#tech-specifics)
   - [Assumptions](#assumptions)
   - [Maintainers](#maintainers)
   - [Contributing](#contributing)
   - [License](#license)
 
+## Installation 
+
+There are 3 ways to install this command line utility,
+
+1. Install from source code. This needs golang to be installed (> 1.11) and GOPATH to be set with properly with GOPATH added to the PATH.
+```
+./bin/install
+```
+
+2. If you prefer Docker,
+```
+# Build the docker container,
+docker build -t github-stats .
+
+# To test the functionality,
+a. Fetch the active day of week along with average commit
+docker run github-stats activeDay --weeks=20 kubernetes/kubernetes
+
+b. List the average commit for week
+docker run github-stats listAverageCommits kubernetes/kubernetes
+```
+
+3. Github releases contains binaries targeting difference operating systems. This is generated using [goreleaser](https://github.com/goreleaser/goreleaser)
+
+[Download Binary here](https://github.com/worldofprasanna/github-stats/releases/tag/v1.0.0)
+
+
 ## Usage
 
+```
+# To know about the command, use --help option. After installation is successful,
+./bin/run --help
+./bin/run activeDay --weeks=20 kubernetes/kubernetes
+./bin/run listAverageCommits --sort=desc kubernetes/kubernetes
+
+```
 ```
 # To run the unit test
 ./bin/test
@@ -26,32 +61,16 @@
 # To run the linter
 ./bin/lint
 
-```
-```
-# To know about the command, use --help option
-./bin/run --help
-./bin/run activeDay --weeks=20 kubernetes/kubernetes
-./bin/run listAverageCommits --sort=desc kubernetes/kubernetes
+# To get the binary
+./bin/build
 
 ```
-```
-# Docker Setup
-docker build -t github-stats .
 
-# To test the functionality
+## Tech specifics
 
-1. Fetch the active day of week along with average commit
-docker run github-stats activeDay --weeks=20 kubernetes/kubernetes
-
-2. List the average commit for week
-docker run github-stats listAverageCommits kubernetes/kubernetes
-
-```
-## Install the binary in GOPATH/bin
-
-```
-/bin/install
-```
+- This uses CircleCI to run unit tests, linters, build and publish the package. You can see the pipelines [here](https://circleci.com/workflow-run/3e861475-a6e1-46de-a664-5395783c92c9)
+- Code climate integration is done to see if there are any code smells
+- This repo depends on Go modules and hence it needs golang > 1.11
 
 ## Assumptions
 
