@@ -33,6 +33,16 @@ jobs:
       - store_artifacts:
           path: app
           destination: package/app
+    publish_package:
+      docker:
+        - image: golang:1.13.4-stretch
+      steps:
+        - checkout
+        - run:
+            name: Publish the package
+            command:
+              run: curl -sL https://git.io/goreleaser | bash
+
 
 workflows:
   version: 2
@@ -47,16 +57,16 @@ workflows:
           filters:
             branches:
               only: master
-      # - hold_for_approval:
-      #     type: approval
-      #     requires:
-      #       - build
-      #     filters:
-      #       branches:
-      #         only: master
-      # - publish_package:
-      #     requires:
-      #       - hold_for_approval
-      #     filters:
-      #       branches:
-      #         only: master
+      - hold_for_approval:
+          type: approval
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - publish_package:
+          requires:
+            - hold_for_approval
+          filters:
+            branches:
+              only: master
