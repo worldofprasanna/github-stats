@@ -19,6 +19,7 @@ var rootCmd = &cobra.Command{
 Eg: github-stats listAverageCommits --help`,
 }
 
+// Execute - Main function executed from Cobra
 func Execute() {
   if err := rootCmd.Execute(); err != nil {
     fmt.Println(err)

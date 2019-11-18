@@ -6,19 +6,21 @@ import (
 	"github.com/google/go-github/github"
 )
 
+// Statistics type which holds all the business logic
 type Statistics struct {
 	weeks int
 	sort string
 	commitActivities []map[string]int
 }
 
+// SortedCommit type has key - day, value - no of commits.
+// Use to store the commits based on no of commits order.
 type SortedCommit struct {
 	Key   string
 	Value int
 }
 
-var daysOfWeek = []string {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"}
-
+// NewStatistics function instantiates new Statistics based on the args
 func NewStatistics(repoPath string, weeks int, sort string) *Statistics {
 	githubAPI := NewGithubAPI(repoPath)
 	rawCommitActivities := githubAPI.FetchCommits()
@@ -34,6 +36,9 @@ func NewStatistics(repoPath string, weeks int, sort string) *Statistics {
 	}
 }
 
+var daysOfWeek = []string {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"}
+
+// FilterLastNRecords - Used to filter the records for the last n weeks given
 func FilterLastNRecords(commits []*github.WeeklyCommitActivity, weeks int) []*github.WeeklyCommitActivity {
 	var lastCommitActivities []*github.WeeklyCommitActivity
 	maxValue := len(commits)
@@ -46,12 +51,14 @@ func FilterLastNRecords(commits []*github.WeeklyCommitActivity, weeks int) []*gi
 	return lastCommitActivities
 }
 
+// ActiveDayInRepo - Returns the most no of commits made for the day of week
 func (s *Statistics) ActiveDayInRepo() string {
 	aggregatedCommitActivities := AggregateCommitActivities(s.commitActivities, s.weeks)
 	maxCommitDay, maxCommit := FindMostCommitsDay(aggregatedCommitActivities)
 	return fmt.Sprintf("%s %d", maxCommitDay, maxCommit)
 }
 
+// AggregateCommitActivities - Returns all the commit aggregated for each day
 func AggregateCommitActivities(commits []map[string]int, totalWeeks int) map[string]int {
 	aggregatedCommits := make(map[string]int)
 	for _, commit := range commits {
@@ -66,6 +73,7 @@ func AggregateCommitActivities(commits []map[string]int, totalWeeks int) map[str
 	return aggregatedCommits
 }
 
+// FindMostCommitsDay - Returns the most no of commits along with the day of the week
 func FindMostCommitsDay(commits map[string]int) (string, int) {
 	var maxDay string
 	maxCommits := 0
@@ -79,6 +87,7 @@ func FindMostCommitsDay(commits map[string]int) (string, int) {
 	return maxDay, maxCommits
 }
 
+// ParseCommitActivity - Converts object WeeklyCommitActivity into a map of { day => no of commits }
 func ParseCommitActivity(ca *github.WeeklyCommitActivity) map[string]int {
 	commitActivity := make(map[string]int)
 	commitsPerDay := ca.Days
@@ -89,6 +98,7 @@ func ParseCommitActivity(ca *github.WeeklyCommitActivity) map[string]int {
 	return commitActivity
 }
 
+// AverageCommitPerDay - Returns the average no of commits made for each day of the week
 func (s *Statistics) AverageCommitPerDay() {
 	commits := AggregateCommitActivities(s.commitActivities, s.weeks)
 	sortedCommits := SortCommitsPerDay(commits, s.sort)
@@ -97,6 +107,7 @@ func (s *Statistics) AverageCommitPerDay() {
 	}
 }
 
+// SortCommitsPerDay - Sorts the commits based on the no of commits either in ascending or descending order
 func SortCommitsPerDay(commits map[string]int, sortBy string) []SortedCommit {
 	var sortedCommits []SortedCommit
   for k, v := range commits {
