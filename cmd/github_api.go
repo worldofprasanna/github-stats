@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 // GithubAPI type which holds the Repository name and the owner name
 type GithubAPI struct {
 	RepoName string
@@ -30,12 +29,12 @@ func parseRepoName(repoPath string) (string, string) {
 }
 
 // FetchCommits - Makes call to Github service and fetches the Commit Activity for the repo
-func (githubAPI GithubAPI) FetchCommits() []*github.WeeklyCommitActivity{
+func (githubAPI GithubAPI) FetchCommits() ([]*github.WeeklyCommitActivity, error){
 	ctx := context.Background()
 	client := github.NewClient(nil)
 	commitActivities, _, err := client.Repositories.ListCommitActivity(ctx, githubAPI.Owner, githubAPI.RepoName)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return commitActivities
+	return commitActivities, nil
 }

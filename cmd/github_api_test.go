@@ -17,7 +17,8 @@ func TestFetchCommits(t *testing.T) {
 
 	t.Run("should fetch the tweets properly", func(t *testing.T) {
 		githubAPI := cmd.NewGithubAPI("kubernetes/kubernetes")
-		values := githubAPI.FetchCommits()
+		values, err := githubAPI.FetchCommits()
 		assert.Equal(t, len(values), 52, "should fetch 52 weeks record")
+		assert.Equal(t, err, nil, "should not have errored out")
 	})
 }

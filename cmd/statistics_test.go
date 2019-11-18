@@ -102,9 +102,10 @@ func TestStatistics(t *testing.T) {
 
 	// This is a flaky test, as it depends on the actual Github API and the result may change in future.
 	t.Run("should find the max number of commit and day for the repository", func(t *testing.T) {
-		statistics := cmd.NewStatistics("kubernetes/kubernetes", 52, "asc")
+		statistics, err := cmd.NewStatistics("kubernetes/kubernetes", 52, "asc")
 		result := statistics.ActiveDayInRepo()
 		assert.NotEqual(t, result, "", "should have found the max commit and day for it. Ignore the actual value as it would change in realtime.")
+		assert.Equal(t, err, nil, "should not be errored out")
 	})
 
 	t.Run("should sort the commits based on commit count", func(t *testing.T) {

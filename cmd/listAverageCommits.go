@@ -5,6 +5,7 @@ import (
 	"strings"
 	"errors"
 	"github.com/spf13/cobra"
+	log "github.com/sirupsen/logrus"
 )
 
 var listAverageCommitsCmd = &cobra.Command{
@@ -26,7 +27,11 @@ Eg: ./app listAverageCommits --sort=desc kubernetes/kubernetes`,
       return errors.New("Not a valid repo path. Specify in format <owner/repo>")
     }
     fmt.Printf("Going to display metrics for [repo - %s, sort order - %s]\n", repoName, sort)
-    statistics := NewStatistics(repoName, 52, sort)
+	  statistics, err := NewStatistics(repoName, 52, sort)
+	  if err != nil {
+		  log.Error("Error occurred while fetching the commits from Github: ", err.Error())
+		  return nil
+	  }
     fmt.Println("Result:")
     statistics.AverageCommitPerDay()
     return nil

@@ -21,9 +21,12 @@ type SortedCommit struct {
 }
 
 // NewStatistics function instantiates new Statistics based on the args
-func NewStatistics(repoPath string, weeks int, sort string) *Statistics {
+func NewStatistics(repoPath string, weeks int, sort string) (*Statistics, error) {
 	githubAPI := NewGithubAPI(repoPath)
-	rawCommitActivities := githubAPI.FetchCommits()
+	rawCommitActivities, err := githubAPI.FetchCommits()
+	if err != nil {
+		return nil, err
+	}
 	lastCommitActivities := FilterLastNRecords(rawCommitActivities, weeks)
 	commitActivities := make([]map[string]int, len(lastCommitActivities))
 	for i, val := range lastCommitActivities {
@@ -33,7 +36,7 @@ func NewStatistics(repoPath string, weeks int, sort string) *Statistics {
 		weeks: weeks,
 		commitActivities: commitActivities,
 		sort: sort,
-	}
+	}, nil
 }
 
 var daysOfWeek = []string {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"}

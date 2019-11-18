@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"errors"
-
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,11 @@ Eg: ./app activeDay --weeks=20 kubernetes/kubernetes`,
 			return errors.New("Not a valid repo path. Specify in format <owner/repo>")
 		}
 		fmt.Printf("Going to collect metrics for [repo - %s, weeks - %d]\n", repoName, weeks)
-		statistics := NewStatistics(repoName, weeks, "")
+		statistics, err := NewStatistics(repoName, weeks, "")
+		if err != nil {
+			log.Error("Error occurred while fetching the commits from Github: ", err.Error())
+			return nil
+		}
 		result := statistics.ActiveDayInRepo()
 		fmt.Printf("Result: %s\n", result)
 		return nil
