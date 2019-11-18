@@ -10,11 +10,9 @@ import (
 var listAverageCommitsCmd = &cobra.Command{
 	Use:   "listAverageCommits",
 	Short: "list the commit activity for the repository",
-	Long: `This would list the average commits per day
+	Long: `params: repo name (string), sort (asc|desc)
 
-Eg: github-stats listAverageCommits --sort=desc kubernetes/kubernetes
-
-  Please check help for more detailed instructions.`,
+Eg: ./app listAverageCommits --sort=desc kubernetes/kubernetes`,
 	RunE: func(cmd *cobra.Command, args []string) error {
     sort, err := cmd.Flags().GetString("sort")
     if err != nil {

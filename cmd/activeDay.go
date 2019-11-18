@@ -11,11 +11,9 @@ import (
 var activeDayCmd = &cobra.Command{
 	Use:   "activeDay",
 	Short: "Fetch the active day of the week along with the average commit count",
-	Long: `Use this command to fetch the most active day for the specified no of weeks.
+	Long: `params: repo name (string), weeks (integer)
 
-Eg: github-stats activeDay --weeks=20 kubernetes/kubernetes
-
-Please check help for more detailed instructions.`,
+Eg: ./app activeDay --weeks=20 kubernetes/kubernetes`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		weeks, err := cmd.Flags().GetInt("weeks")
 		if err != nil {
