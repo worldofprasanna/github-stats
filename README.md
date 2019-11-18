@@ -1,7 +1,7 @@
 # github-stats
 
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-[![CircleCI](https://circleci.com/gh/worldofprasanna/github-stats.svg?style=svg)](https://circleci.com/gh/worldofprasanna/github-stats)
+[![CircleCI](https://img.shields.io/circleci/build/github/worldofprasanna/github-stats/master?style=flat-square)](https://circleci.com/gh/worldofprasanna/github-stats)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ca9aa9f54f9df2ac62b8/maintainability)](https://codeclimate.com/github/worldofprasanna/github-stats/maintainability)
 
 > Extract info about commits from github
