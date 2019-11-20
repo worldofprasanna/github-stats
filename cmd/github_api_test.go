@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/worldofprasanna/github-stats/cmd"
+	"github.com/worldofprasanna/github-stats/cmd"
 )
 
 func TestFetchCommits(t *testing.T) {

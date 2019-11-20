@@ -4,7 +4,7 @@ import (
 	"testing"
 	"github.com/stretchr/testify/assert"
 	"github.com/google/go-github/github"
-	"gitlab.com/worldofprasanna/github-stats/cmd"
+	"github.com/worldofprasanna/github-stats/cmd"
 )
 
 func TestStatistics(t *testing.T) {

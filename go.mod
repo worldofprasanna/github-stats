@@ -1,4 +1,4 @@
-module gitlab.com/worldofprasanna/github-stats
+module github.com/worldofprasanna/github-stats
 
 go 1.13
 
