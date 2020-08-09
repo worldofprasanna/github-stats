@@ -25,7 +25,7 @@ Eg: ./app listAverageCommits --sort=desc kubernetes/kubernetes`,
     repoName := strings.Join(args, "")
     if !strings.Contains(repoName, "/") {
       return errors.New("Not a valid repo path. Specify in format <owner/repo>")
-    }
+		}
     fmt.Printf("Going to display metrics for [repo - %s, sort order - %s]\n", repoName, sort)
 	  statistics, err := NewStatistics(repoName, 52, sort)
 	  if err != nil {
